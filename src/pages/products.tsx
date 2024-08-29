@@ -1,4 +1,5 @@
-import { useState } from "react";
+// import { useState } from "react";
+import { useImmer } from "use-immer";
 import Button from "../components/Button";
 import Card, { CardFooter, CardHeader, CardBody } from "../components/Card";
 
@@ -43,22 +44,19 @@ const products: Product[] = [
 ];
 
 export default function ProductsPage() {
-  const [cart, setCart] = useState<Cart[]>([]);
+  const [cart, updateCart] = useImmer<Cart[]>([]);
 
   function handleAddToCart(product: Product) {
     const existingProduct = cart.find((item) => item.id === product.id);
 
     if (existingProduct) {
-      setCart(
-        cart.map((item) => {
-          if (item.id === product.id) {
-            return { ...item, quantity: item.quantity + 1 };
-          }
-          return item;
-        })
-      );
+      updateCart((draft) => {
+        draft[cart.indexOf(existingProduct)].quantity += 1;
+      });
     } else {
-      setCart([...cart, { id: product.id, name: product.name, quantity: 1 }]);
+      updateCart((draft) => {
+        draft.push({ id: product.id, name: product.name, quantity: 1 });
+      });
     }
   }
 
