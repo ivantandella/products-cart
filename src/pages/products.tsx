@@ -2,6 +2,7 @@
 import { useImmer } from "use-immer";
 import Button from "../components/Button";
 import Card, { CardFooter, CardHeader, CardBody } from "../components/Card";
+import { useEffect, useState } from "react";
 
 export type Product = {
   id: number;
@@ -45,6 +46,19 @@ const products: Product[] = [
 
 export default function ProductsPage() {
   const [cart, updateCart] = useImmer<Cart[]>([]);
+  const [totalPrice, setTotalPrice] = useState(0);
+
+  useEffect(() => {
+    const sum = cart.reduce((acc, item) => {
+      const product = products.find((product) => product.id === item.id);
+      if (product) {
+        return acc + product.price * item.quantity;
+      } else {
+        return acc;
+      }
+    }, 0);
+    setTotalPrice(sum);
+  }, [cart]);
 
   function handleAddToCart(product: Product) {
     updateCart((draft) => {
@@ -115,14 +129,16 @@ export default function ProductsPage() {
         </div>
         <div className="w-2/6 pr-4">
           <h1 className="text-3xl font-bold my-4 text-blue-700">Cart</h1>
-          <ul>
+          <ul className="mb-2">
             {cart.length === 0 && <p>Cart is empty</p>}
             {cart.map((item) => (
               <li
                 key={item.id}
-                className="mb-4 border rounded-md border-gray-600 shadow p-4"
+                className="flex items-center mb-4 border rounded-md border-gray-600 shadow p-4"
               >
-                {item.name} - {item.quantity} pc(s)
+                <span className="grow">
+                  {item.name} - {item.quantity} pc(s)
+                </span>
                 <Button
                   variant="bg-gray-500 ml-2"
                   onClick={() => handleIncreaseQuantity(item)}
@@ -155,6 +171,15 @@ export default function ProductsPage() {
               </li>
             ))}
           </ul>
+          <div className="flex items-center justify-between">
+            <b>Total:</b>
+            <b>
+              {totalPrice.toLocaleString("id-ID", {
+                style: "currency",
+                currency: "IDR",
+              })}
+            </b>
+          </div>
         </div>
       </div>
     </>
