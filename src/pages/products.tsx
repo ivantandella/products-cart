@@ -60,6 +60,12 @@ export default function ProductsPage() {
     }
   }
 
+  function handleRemoveFromCart(cart: Cart) {
+    updateCart((draft) => {
+      draft.splice(draft.indexOf(cart), 1);
+    });
+  }
+
   function handleClickLogout(
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) {
@@ -97,6 +103,12 @@ export default function ProductsPage() {
             {cart.map((item) => (
               <li key={item.id}>
                 {item.name} - {item.quantity} pc(s)
+                <Button
+                  variant="bg-red-600 ml-2"
+                  onClick={() => handleRemoveFromCart(item)}
+                >
+                  Remove
+                </Button>
               </li>
             ))}
           </ul>
