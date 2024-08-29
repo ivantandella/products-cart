@@ -49,6 +49,15 @@ export default function ProductsPage() {
   const [totalPrice, setTotalPrice] = useState(0);
 
   useEffect(() => {
+    const storedCart = localStorage.getItem("cart");
+    if (storedCart) {
+      updateCart((draft) => {
+        draft.push(...JSON.parse(storedCart));
+      });
+    }
+  }, []);
+
+  useEffect(() => {
     const sum = cart.reduce((acc, item) => {
       const product = products.find((product) => product.id === item.id);
       if (product) {
@@ -58,6 +67,8 @@ export default function ProductsPage() {
       }
     }, 0);
     setTotalPrice(sum);
+
+    localStorage.setItem("cart", JSON.stringify(cart));
   }, [cart]);
 
   function handleAddToCart(product: Product) {
