@@ -1,4 +1,5 @@
 import axios from "axios";
+import { BASE_URL } from "../constant";
 
 export type ProductType = {
   id: number;
@@ -22,7 +23,7 @@ export type ProductType = {
 
 export async function getProducts() {
   const data = await axios
-    .get("https://fakestoreapi.com/products")
+    .get(`${BASE_URL}/products`)
 
   return data.data as ProductType[]
 }
