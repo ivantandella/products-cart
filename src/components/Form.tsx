@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import Button from "./Button";
 import FormInput from "./FormInput";
+import { login } from "../services/auth.service";
 
 type FormProps = {
   title: string;
@@ -11,11 +12,33 @@ type FormProps = {
 export default function Form(props: FormProps) {
   const { title, btnText, type } = props;
 
-  function handleSubmit(e) {
+  function handleSubmit(e: any) {
     e.preventDefault();
-    localStorage.setItem("email", e.target.email.value);
-    localStorage.setItem("password", e.target.password.value);
-    window.location.href = "/products";
+    // localStorage.setItem("email", e.target.email.value);
+    // localStorage.setItem("password", e.target.password.value);
+    // window.location.href = "/products";
+    const data = {
+      username: e.target.username.value,
+      password: e.target.password.value,
+    };
+    // login(data, (status, res) => {
+    //   if (status) {
+    //     localStorage.setItem("token", res);
+    //     window.location.href = "/products";
+    //   } else {
+    //     alert(res.response.data);
+    //   }
+    // });
+    async function exec() {
+      try {
+        const masuk = await login(data);
+        localStorage.setItem("token", masuk.token);
+        window.location.href = "/products";
+      } catch (error: any) {
+        alert(error.response.data);
+      }
+    }
+    exec();
   }
 
   return (
@@ -31,10 +54,10 @@ export default function Form(props: FormProps) {
           />
         )}
         <FormInput
-          label="Email"
-          name="email"
-          type="email"
-          placeholder="example@mail.com"
+          label="Username"
+          name="username"
+          type="text"
+          placeholder="jhondoe"
         />
         <FormInput
           label="Password"
