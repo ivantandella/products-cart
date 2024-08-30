@@ -49,10 +49,8 @@ export default function ProductsPage() {
       try {
         const data = await getProducts();
         setProducts(data);
-
-        console.log("test");
-      } catch (e) {
-        alert(e.message);
+      } catch (error: any) {
+        alert(error.message);
         setProducts([]);
       }
     }
@@ -136,8 +134,7 @@ export default function ProductsPage() {
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) {
     e.preventDefault();
-    localStorage.removeItem("email");
-    localStorage.removeItem("password");
+    localStorage.removeItem("token");
     window.location.href = "/login";
   }
 
