@@ -1,3 +1,4 @@
+import { currencyConversion } from "../utils/number";
 import Button from "./Button";
 
 type CardProps = {
@@ -20,14 +21,18 @@ export function CardHeader(props: CardHeaderProps) {
   const { imageUrl } = props;
   return (
     <a href="#">
-      <img src={imageUrl} alt="shoes" className="p-8 rounded-t-lg" />
+      <img
+        src={imageUrl}
+        alt="shoes"
+        className="p-8 rounded-t-lg h-60 w-full object-cover"
+      />
     </a>
   );
 }
 
 type CardBodyProps = {
   title: string;
-  children: React.ReactNode;
+  children: string;
 };
 export function CardBody(props: CardBodyProps) {
   const { title, children } = props;
@@ -35,9 +40,9 @@ export function CardBody(props: CardBodyProps) {
     <div className="px-5 pb-5 h-full">
       <a href="#">
         <h5 className="text-xl font-semibold tracking-tight text-white">
-          {title}
+          {title.substring(0, 20)}...
         </h5>
-        <p className="text-m text-white">{children}</p>
+        <p className="text-m text-white">{children.substring(0, 100)}...</p>
       </a>
     </div>
   );
@@ -52,7 +57,7 @@ export function CardFooter(props: CardFooterProps) {
   return (
     <div className="flex items-center justify-between px-5 pb-5">
       <span className="text-xl font-bold text-white">
-        {price.toLocaleString("id-ID", { style: "currency", currency: "IDR" })}
+        {currencyConversion(price)}
       </span>
       <Button onClick={addToCart}>Add to cart</Button>
     </div>

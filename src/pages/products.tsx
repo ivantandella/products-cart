@@ -4,51 +4,63 @@ import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import Product from "../components/Product";
 import Cart from "../components/Cart";
-
-export type ProductType = {
-  id: number;
-  name: string;
-  price: number;
-  imageUrl: string;
-  description: string;
-};
+import { getProducts, ProductType } from "../services/product.service";
 
 export type CartType = {
   id: number;
-  name: string;
+  title: string;
   quantity: number;
 };
 
-const products: ProductType[] = [
-  {
-    id: 1,
-    name: "Sepatu Bagus",
-    price: 100000,
-    imageUrl: "/images/fashion-shoes-sneakers.jpg",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci,recusandae rerum impedit explicabo dolores in perspiciatis ipsum quod doloribus quisquam Provident earum enim dolor maxime quae, nobis dicta numquam voluptatum",
-  },
-  {
-    id: 2,
-    name: "Sepatu Keren",
-    price: 10000000,
-    imageUrl: "/images/fashion-shoes-sneakers.jpg",
-    description: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
-  },
-  {
-    id: 3,
-    name: "Sepatu Mantap",
-    price: 1000000,
-    imageUrl: "/images/fashion-shoes-sneakers.jpg",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit.  in perspiciatis ipsum quod doloribus quisquam Provident earum enim dolor maxime quae, nobis dicta numquam voluptatum",
-  },
-];
+// const products: ProductType[] = [
+//   {
+//     id: 1,
+//     name: "Sepatu Bagus",
+//     price: 100000,
+//     imageUrl: "/images/fashion-shoes-sneakers.jpg",
+//     description:
+//       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci,recusandae rerum impedit explicabo dolores in perspiciatis ipsum quod doloribus quisquam Provident earum enim dolor maxime quae, nobis dicta numquam voluptatum",
+//   },
+//   {
+//     id: 2,
+//     name: "Sepatu Keren",
+//     price: 10000000,
+//     imageUrl: "/images/fashion-shoes-sneakers.jpg",
+//     description: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+//   },
+//   {
+//     id: 3,
+//     name: "Sepatu Mantap",
+//     price: 1000000,
+//     imageUrl: "/images/fashion-shoes-sneakers.jpg",
+//     description:
+//       "Lorem ipsum dolor sit amet consectetur adipisicing elit.  in perspiciatis ipsum quod doloribus quisquam Provident earum enim dolor maxime quae, nobis dicta numquam voluptatum",
+//   },
+// ];
 
 export default function ProductsPage() {
   const [cart, updateCart] = useImmer<CartType[]>([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [isSync, setIsSync] = useState(false);
+  const [products, setProducts] = useState<ProductType[]>([]);
+
+  useEffect(() => {
+    async function exec() {
+      try {
+        const data = await getProducts();
+        setProducts(data);
+
+        console.log("test");
+      } catch (e) {
+        alert(e.message);
+        setProducts([]);
+      }
+    }
+    exec();
+    // getProducts((data) => {
+    //   setProducts(data);
+    // });
+  }, []);
 
   useEffect(() => {
     if (isSync) return;
@@ -73,7 +85,7 @@ export default function ProductsPage() {
     setTotalPrice(sum);
 
     localStorage.setItem("cart", JSON.stringify(cart));
-  }, [cart]);
+  }, [cart, products]);
 
   function handleAddToCart(product: ProductType) {
     updateCart((draft) => {
@@ -81,7 +93,7 @@ export default function ProductsPage() {
       if (currentItem) {
         currentItem.quantity += 1;
       } else {
-        draft.push({ id: product.id, name: product.name, quantity: 1 });
+        draft.push({ id: product.id, title: product.title, quantity: 1 });
       }
     });
   }

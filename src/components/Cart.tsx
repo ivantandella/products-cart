@@ -1,4 +1,5 @@
 import { CartType } from "../pages/Products";
+import { currencyConversion } from "../utils/number";
 import Button from "./Button";
 
 type CartProps = {
@@ -28,7 +29,7 @@ export default function Cart(props: CartProps) {
             className="flex items-center mb-4 border rounded-md border-gray-600 shadow p-4"
           >
             <span className="grow">
-              {item.name} - {item.quantity} pc(s)
+              {item.title.substring(0, 10)}... - {item.quantity} pc(s)
             </span>
             <Button
               variant="bg-gray-500 ml-2"
@@ -65,12 +66,7 @@ export default function Cart(props: CartProps) {
       {cart && cart.length > 0 && (
         <div className="flex items-center justify-between">
           <b>Total:</b>
-          <b>
-            {totalPrice.toLocaleString("id-ID", {
-              style: "currency",
-              currency: "IDR",
-            })}
-          </b>
+          <b>{currencyConversion(totalPrice)}</b>
         </div>
       )}
     </div>
