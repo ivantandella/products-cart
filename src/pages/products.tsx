@@ -130,17 +130,9 @@ export default function ProductsPage() {
     });
   }
 
-  function handleClickLogout(
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) {
-    e.preventDefault();
-    localStorage.removeItem("token");
-    window.location.href = "/login";
-  }
-
   return (
     <>
-      <Navbar handleClickLogout={(e) => handleClickLogout(e)} />
+      <Navbar />
       <div className="flex justify-center">
         <Product products={products} handleAddToCart={handleAddToCart} />
         <Cart

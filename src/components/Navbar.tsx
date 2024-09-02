@@ -1,13 +1,13 @@
 import Button from "./Button";
 
-type NavbarProps = {
-  handleClickLogout: (
+export default function Navbar() {
+  function handleClickLogout(
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => void;
-};
-
-export default function Navbar(props: NavbarProps) {
-  const { handleClickLogout } = props;
+  ) {
+    e.preventDefault();
+    localStorage.removeItem("token");
+    window.location.href = "/login";
+  }
 
   return (
     <div className="h-10 bg-blue-600 text-end">
