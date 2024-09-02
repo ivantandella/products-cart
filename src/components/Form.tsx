@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import Button from "./Button";
 import FormInput from "./FormInput";
 import { login } from "../services/auth.service";
+import { useState } from "react";
 
 type FormProps = {
   title: string;
@@ -11,6 +12,7 @@ type FormProps = {
 
 export default function Form(props: FormProps) {
   const { title, btnText, type } = props;
+  const [loginFailed, setLoginFailed] = useState<string>();
 
   function handleSubmit(e: any) {
     e.preventDefault();
@@ -35,7 +37,8 @@ export default function Form(props: FormProps) {
         localStorage.setItem("token", masuk.token);
         window.location.href = "/products";
       } catch (error: any) {
-        alert(error.response.data);
+        console.log(error);
+        setLoginFailed(error.response.data);
       }
     }
     exec();
@@ -45,6 +48,7 @@ export default function Form(props: FormProps) {
     <div className="p-5 border rounded shadow border-gray-800">
       <h1 className="text-3xl font-bold mb-6 text-blue-600">{title}</h1>
       <form onSubmit={handleSubmit}>
+        {loginFailed && <p className="text-red-500 mb-2">{loginFailed}</p>}
         {type === "register" && (
           <FormInput
             label="Name"
