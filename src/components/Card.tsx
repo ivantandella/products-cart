@@ -22,7 +22,7 @@ type CardHeaderProps = {
 export function CardHeader(props: CardHeaderProps) {
   const { imageUrl, id } = props;
   return (
-    <Link to={`/product/${id}`}>
+    <Link to={`/products/${id}`}>
       <img
         src={imageUrl}
         alt="shoes"
