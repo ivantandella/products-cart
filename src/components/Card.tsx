@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { currencyConversion } from "../utils/number";
 import Button from "./Button";
 
@@ -16,17 +17,18 @@ export default function Card(props: CardProps) {
 
 type CardHeaderProps = {
   imageUrl: string;
+  id: number;
 };
 export function CardHeader(props: CardHeaderProps) {
-  const { imageUrl } = props;
+  const { imageUrl, id } = props;
   return (
-    <a href="#">
+    <Link to={`/product/${id}`}>
       <img
         src={imageUrl}
         alt="shoes"
         className="p-8 rounded-t-lg h-60 w-full object-cover"
       />
-    </a>
+    </Link>
   );
 }
 

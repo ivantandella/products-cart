@@ -27,3 +27,10 @@ export async function getProducts() {
 
   return data.data as ProductType[]
 }
+
+export async function getDetailProduct(id) {
+  const data = await axios
+    .get(`${BASE_URL}/products/${id}`)
+
+  return data.data as ProductType
+}

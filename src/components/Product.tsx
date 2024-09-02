@@ -13,7 +13,7 @@ export default function ProductComponent(props: ProductComponentProps) {
       {products.length > 0 &&
         products.map((product) => (
           <Card key={product.id}>
-            <CardHeader imageUrl={product.image} />
+            <CardHeader imageUrl={product.image} id={product.id} />
             <CardBody title={product.title}>{product.description}</CardBody>
             <CardFooter
               price={product.price}

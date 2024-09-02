@@ -5,6 +5,7 @@ import Navbar from "../components/Navbar";
 import Product from "../components/Product";
 import Cart from "../components/Cart";
 import { getProducts, ProductType } from "../services/product.service";
+import { useLogin } from "../hooks/useLogin";
 
 export type CartType = {
   id: number;
@@ -43,6 +44,8 @@ export default function ProductsPage() {
   const [totalPrice, setTotalPrice] = useState(0);
   const [isSync, setIsSync] = useState(false);
   const [products, setProducts] = useState<ProductType[]>([]);
+
+  useLogin();
 
   useEffect(() => {
     async function exec() {
