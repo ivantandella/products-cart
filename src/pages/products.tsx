@@ -6,6 +6,7 @@ import Product from "../components/Product";
 import Cart from "../components/Cart";
 import { getProducts, ProductType } from "../services/product.service";
 import { useLogin } from "../hooks/useLogin";
+import useTotalPrice from "../hooks/use-total-price";
 
 export type CartType = {
   id: number;
@@ -41,12 +42,18 @@ export type CartType = {
 
 export default function ProductsPage() {
   const [cart, updateCart] = useImmer<CartType[]>([]);
-  const [totalPrice, setTotalPrice] = useState(0);
+  // const [totalPrice, setTotalPrice] = useState(0);
   const [isSync, setIsSync] = useState(false);
   const [products, setProducts] = useState<ProductType[]>([]);
 
+  // const dispatch = useTotalPriceDispatch();
+  // const { total } = useTotalPrice();
+
+  const { totalPrice, onUpdateTotalPrice } = useTotalPrice();
+
   useLogin();
 
+  // get product from api
   useEffect(() => {
     async function exec() {
       try {
@@ -58,11 +65,13 @@ export default function ProductsPage() {
       }
     }
     exec();
+
     // getProducts((data) => {
     //   setProducts(data);
     // });
   }, []);
 
+  // sync cart with local storage
   useEffect(() => {
     if (isSync) return;
     const storedCart = localStorage.getItem("cart");
@@ -74,19 +83,30 @@ export default function ProductsPage() {
     setIsSync(true);
   }, []);
 
+  // update total price
   useEffect(() => {
-    const sum = cart.reduce((acc, item) => {
+    const sum = cart.reduce((prev, item) => {
       const product = products.find((product) => product.id === item.id);
       if (product) {
-        return acc + product.price * item.quantity;
+        return prev + product.price * item.quantity;
       } else {
-        return acc;
+        return prev;
       }
     }, 0);
-    setTotalPrice(sum);
+
+    // setTotalPrice(sum);
+
+    // dispatch({
+    //   type: "UPDATE_TOTAL_PRICE",
+    //   payload: {
+    //     total: sum,
+    //   },
+    // });
+
+    onUpdateTotalPrice(sum);
 
     localStorage.setItem("cart", JSON.stringify(cart));
-  }, [cart, products]);
+  }, [cart, products, onUpdateTotalPrice]);
 
   function handleAddToCart(product: ProductType) {
     updateCart((draft) => {

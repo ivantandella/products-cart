@@ -1,5 +1,5 @@
 import { useImmer } from "use-immer";
-import { CartType } from "../pages/Products";
+import { CartType } from "../pages/products";
 import { getProducts, ProductType } from "../services/product.service";
 import React from "react";
 

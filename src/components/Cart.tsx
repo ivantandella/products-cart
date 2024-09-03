@@ -1,4 +1,4 @@
-import { CartType } from "../pages/Products";
+import { CartType } from "../pages/products";
 import { currencyConversion } from "../utils/number";
 import Button from "./Button";
 

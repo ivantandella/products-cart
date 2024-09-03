@@ -9,6 +9,7 @@ import ProductsPage from "./pages/products.tsx";
 import ErrorPage from "./pages/error.tsx";
 import DetailProductPage from "./pages/detail-product.tsx";
 import DarkModeContextProvider from "./context/DarkMode.tsx";
+import { TotalPriceProvider } from "./context/TotalPriceContext.tsx";
 
 const router = createBrowserRouter([
   {
@@ -37,7 +38,9 @@ const router = createBrowserRouter([
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <DarkModeContextProvider>
+      {/* <TotalPriceProvider> */}
       <RouterProvider router={router} />
+      {/* </TotalPriceProvider> */}
     </DarkModeContextProvider>
   </StrictMode>
 );
