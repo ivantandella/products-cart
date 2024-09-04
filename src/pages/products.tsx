@@ -2,17 +2,20 @@ import Navbar from "../components/Navbar";
 import Product from "../components/Product";
 import Cart from "../components/Cart";
 import useCart from "../hooks/use-cart";
+import { useLogin } from "../hooks/use-login";
 
 export default function ProductsPage() {
   const {
-    products,
-    handleAddToCart,
     cart,
+    products,
+    totalPrice,
+    handleAddToCart,
     handleIncreaseQuantity,
     handleDecreaseQuantity,
     handleRemoveFromCart,
-    totalPrice,
   } = useCart();
+
+  useLogin();
 
   return (
     <>
